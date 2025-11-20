@@ -1,9 +1,8 @@
 type SearchProps = {
-  iconUrl: string;
   onChangeText: (text: string) => void;
 };
 
-export default function Searchbar({iconUrl, onChangeText }: SearchProps) {
+export default function Searchbar({onChangeText }: SearchProps) {
   
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
@@ -12,7 +11,7 @@ export default function Searchbar({iconUrl, onChangeText }: SearchProps) {
   }
 
   return (
-    <div className="flex justify-start bg-[#2B2A33] p-4 gap-3 w-full max-w-xl rounded-2xl">
+    <div className="flex justify-start bg-gray-400 p-3 w-full max-w-xl m-2 rounded">
 
       <input
         className="text-white flex-1 border-none outline-none bg-transparent"

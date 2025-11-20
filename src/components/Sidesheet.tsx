@@ -117,7 +117,6 @@ export default function Sidesheet() {
       alert("Product added (local store).");
     }
 
-    // close and reset
     closeSheet();
   }
 
@@ -127,31 +126,29 @@ export default function Sidesheet() {
         <Edit className="w-5 h-5" /> Add Product
       </SheetTrigger>
 
-      <SheetContent className="bg-gray-950 text-white overflow-y-auto px-6 py-6">
+      <SheetContent className="bg-white overflow-y-auto px-6">
         <SheetHeader>
-          <SheetTitle className="text-xl font-bold mb-4">
+          <SheetTitle className="text-xl font-bold m-auto">
             {editing ? "Edit Product" : "Add New Product"}
           </SheetTitle>
         </SheetHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-1">
-            <label className="text-sm text-gray-300">Product ID</label>
+          <div className="">
             <input
               name="id"
-              placeholder="Enter product ID (optional)"
-              className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+              placeholder="Enter product ID"
+              className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1 outline-none"
               value={form.id}
               onChange={handleChange}
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm text-gray-300">Title</label>
             <input
               name="title"
               placeholder="Enter product title"
-              className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1  outline-none"
               value={form.title}
               onChange={handleChange}
               required
@@ -159,12 +156,11 @@ export default function Sidesheet() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm text-gray-300">Price</label>
             <input
               name="price"
               type="number"
               placeholder="Enter price"
-              className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1   outline-none"
               value={form.price}
               onChange={handleChange}
               required
@@ -172,31 +168,29 @@ export default function Sidesheet() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm text-gray-300">Description</label>
             <textarea
               name="description"
               placeholder="Enter product description"
-              className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none min-h-[100px]"
+              className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1   outline-none min-h-[100px]"
               value={form.description}
               onChange={handleChange}
             />
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm text-gray-300">Category</label>
             <input
               name="category"
               placeholder="Enter category"
-              className="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1 outline-none"
               value={form.category}
               onChange={handleChange}
             />
           </div>
 
-        <div className="space-y-1">
+        <div>
       <label
         htmlFor="fileUpload"
-        className="w-full block bg-gray-900 text-gray-300 p-3 rounded-lg border border-gray-700 cursor-pointer hover:bg-gray-800"
+        className="w-full text-gray-600 bg-gray-400 block p-3 rounded-lg cursor-pointer"
       >
         Upload Image
       </label>
@@ -213,7 +207,7 @@ export default function Sidesheet() {
 
           <button
             type="submit"
-            className="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-500 transition text-white font-bold shadow-lg"
+            className="w-full center cursor-pointer p-3 rounded-lg bg-neutral-600 hover:bg-neutral-500 transition text-white font-bold shadow-lg"
           >
             {editing ? "Update Product" : "Add Product"}
           </button>

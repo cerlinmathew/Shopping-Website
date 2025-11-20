@@ -1,6 +1,6 @@
 import Searchbar from "./Searchbar";
 import google from "../assets/google.jpg";
-import firefox from "../assets/flipkart.webp";
+import flipkart from "../assets/flipkart.webp";
 import Category from "./Category";
 import ProductList from "./ProductList";
 import { useState } from "react";
@@ -24,28 +24,23 @@ export default function Home() {
 
   const icons = [
     { title: "Men's Clothing", imageUrl: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRFeKx72zk9BmGumOH_z7UeJKHMU4IE7fLYG3PvRfIAMqPdnVeStD7IF0mmI4bvu6JprXocThypuBjrEUEmA3aAhs0Ql16S5NP2FPyQl0mWLPUEa4tdS5CqcA"},
-    { title: "Women's Clothing", imageUrl: "https://littleboxindia.com/cdn/shop/files/Citrus_Bloom_Strappy_Fit_Flare_Midi_Dress_720x.webp?v=1757681835"},
-    { title: "jewelery", imageUrl: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRBgqP_qZYLJeMyyw_oTuIa5nJhrNBVn62Q-R5NKfVgP2DaYsLXgioilCfz5myKhg69AXOTjbdDtZRptKo5U_ViMSONZBdJcjKZXBGmWcTO332b6r0smgtH5A"},
-    { title: "electronics", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_0gqdl_e2gVubvQ7o0NIopOCenDLYlgLhIA&s" },
+    { title: "Women's Clothing", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkaVTDwCK25O8gA0aFtLh0zjNkL4oA98A-mQ&s"},
+    { title: "Jewelery", imageUrl: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSCezoR-BHJqX7BVabgAGq-sp3Duf79pT4HBzexW4SeWg4pQKD1R1AYxNSIl6q6_hlzPHajhAMcr79AwGmszxKbiZOz2eJrCzEdLw_g6WknEn5maqdfO3xRRw"},
+    { title: "Electronics", imageUrl: "https://st4.depositphotos.com/4475215/21136/i/1600/depositphotos_211360376-stock-photo-collection-consumer-electronics-flying-air.jpg" },
   ];
 
   return (
 
     //wallpaper update
-    <div
-      className="bg-cover bg-fixed min-h-screen"
-      style={{ backgroundImage: `url(${background})` }}
-    >
-      {/* firefox icon */}
-      <div className="flex items-center gap-1 p-2">
-        <img src={firefox} alt="Firefox" className="h-14 rounded-full" />
-        <h1 className="font-bold text-xl">Flipkart</h1>
+    <div className="bg-gray-100">
+      <div className="flex items-center gap-1 p-2 bg-gray-600">
+        <img src={flipkart} alt="Flipkart" className="h-7 rounded-full" />
+        <h1 className="font-bold">flipkart</h1>
       </div>
 
       {/* search bar */}
       <div className="flex justify-center">
-        <Searchbar
-          iconUrl={google}
+        <Searchbar       
           onChangeText={(val) => setSearchText(val)}
         />
       </div>
