@@ -99,7 +99,7 @@ export default function Sidesheet() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!form.title || !form.price || !form.description || !form.category || !form.image) {
+    if (!form.title || !form.price) {
       alert("Please provide title and price");
       return;
     }
