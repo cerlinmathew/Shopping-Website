@@ -1,4 +1,4 @@
-// src/components/ProductDetail.tsx
+
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -17,8 +17,7 @@ export default function ProductDetail() {
       dispatch(fetchProducts());
     }
   }, [dispatch, products.length]);
-
-  // Find product AFTER data loaded
+//find product
   const product = products.find((p) => p.id === Number(id));
 
   if (loading) return <p className=" p-4">Loading product...</p>;

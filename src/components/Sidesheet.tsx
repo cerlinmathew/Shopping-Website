@@ -67,8 +67,6 @@ export default function Sidesheet() {
   ) {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
-    
-
 
   }
   function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
