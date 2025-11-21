@@ -16,9 +16,13 @@ export default function Searchbar({onChangeText }: SearchProps) {
       <input
         className="text-white flex-1 border-none outline-none bg-transparent"
         type="text"
+
         placeholder="Search Product"
-        onChange={(e) => onChangeText(e.target.value)}
+        onChange={(e) =>
+           {onChangeText(e.target.value);
+           console.log(e);}}
       />
+      
     </div>
   );
 }

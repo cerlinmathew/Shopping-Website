@@ -1,6 +1,4 @@
 import React from "react";
-
-
 type IconItem = {
 title: string;
 imageUrl: string;
@@ -25,7 +23,7 @@ onClick={() => onSelectCategory(icon.title.toLowerCase())}
 <img
 src={icon.imageUrl}
 alt={icon.title}
-className="h-16 w-16 sm:h-20 sm:w-20 rounded-xl"
+className="h-16 w-16 sm:h-15 sm:w-15 rounded-xl"
 />
 <p className="text-xs sm:text-sm text-blue-950 font-bold mt-2 text-center">
 {icon.title}

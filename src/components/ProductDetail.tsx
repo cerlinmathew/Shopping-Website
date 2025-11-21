@@ -10,7 +10,7 @@ export default function ProductDetail() {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { list: products, loading, editing } = useSelector((s: RootState) => s.products);
+  const { list: products, loading} = useSelector((s: RootState) => s.products);
 
   useEffect(() => {
     if (products.length === 0) {

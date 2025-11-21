@@ -1,4 +1,4 @@
-// src/slices/productSlice.ts
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -36,8 +36,8 @@ const productSlice = createSlice({
   reducers: {
     addProduct: (state, action: PayloadAction<Product>) => {
 
-      const exists = state.list.some((p) => p.id === action.payload.id);
-      if (exists) {
+      const productExists = state.list.some((p) => p.id === action.payload.id);
+      if (productExists) {
  
         const maxId = state.list.reduce((m, p) => Math.max(m, p.id), 0);
         state.list.push({ ...action.payload, id: maxId + 1 });
@@ -71,6 +71,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state) => {
         state.loading = false;
+      
       });
   },
 });
