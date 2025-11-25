@@ -115,10 +115,10 @@ export default function Sidesheet() {
 
     if (editing) {
       dispatch(updateProduct(payload));
-      alert("Product updated (local store).");
+      alert("Product updated.");
     } else {
       dispatch(addProduct(payload));
-      alert("Product added (local store).");
+      alert("Product added .");
     }
 
     closeSheet();
@@ -126,9 +126,10 @@ export default function Sidesheet() {
 
   return (
     <Sheet open={open} onOpenChange={(val: boolean) => setOpen(val)}>
-      <SheetTrigger className="text-white bg-gray-700 cursor-pointer px-4 py-2 rounded-lg hover:bg-gray-600 flex gap-2">
-        <Edit className="w-5 h-5" /> Add Product
-      </SheetTrigger>
+   <SheetTrigger className="fixed bottom-6 right-6 flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-3 rounded-full text-white shadow-xl hover:scale-105 transition">
+  <Edit className="w-5 h-5" /> Add Product
+</SheetTrigger>
+
 
       <SheetContent className="bg-white overflow-y-auto px-6">
         <SheetHeader>
