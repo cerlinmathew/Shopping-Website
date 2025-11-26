@@ -3,6 +3,8 @@ import flipkart from "../assets/flipkart.webp";
 import Searchbar from "./Searchbar";
 import AddtoCart from "./AddtoCart";
 import { Menu, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 type HeaderProps = {
   searchText: string;
@@ -11,8 +13,11 @@ type HeaderProps = {
   setCategory: (cat: string) => void;
 };
 
-export default function Header({ setSearchText, category, setCategory }: HeaderProps) {
+export default function Header({ setSearchText, category, setCategory }: HeaderProps)
+ {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
 
   return (
     <header className="sticky top-0 z-50 bg-[#2746A8]">
@@ -51,11 +56,21 @@ export default function Header({ setSearchText, category, setCategory }: HeaderP
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex gap-6 text-sm font-semibold text-white">
-              <a className="hover:scale-105 transition cursor-pointer">Home</a>
-              <a className="hover:scale-105 transition cursor-pointer">Products</a>
-              <a className="hover:scale-105 transition cursor-pointer">About</a>
-              <a className="hover:scale-105 transition cursor-pointer">Contact</a>
+              {/* <a className="hover:scale-105 transition cursor-pointer">Home</a> */}
+              {/* <a className="hover:scale-105 transition cursor-pointer">Products</a> */}
+              {/* <a className="hover:scale-105 transition cursor-pointer">About</a> */}
+              {/* <a className="hover:scale-105 transition cursor-pointer">Contact</a> */}
             </nav>
+
+              <button
+    onClick={() => {
+      localStorage.removeItem("isLoggedIn");
+      navigate("/");
+    }}
+    className="text-white font-semibold  text-sm cursor-pointer hover:scale-105"
+  >
+    Logout
+  </button>
 
             {/* Mobile Menu Button */}
             <button
