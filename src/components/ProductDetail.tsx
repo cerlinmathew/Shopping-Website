@@ -31,7 +31,7 @@ export default function ProductDetail() {
         {/* close button */}
         <button
           onClick={() => navigate(-1)}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black"
+          className="absolute top-4 right-4 text-gray-500 hover:text-black cursor-pointer"
         >
           <X />
         </button>
@@ -76,13 +76,13 @@ export default function ProductDetail() {
   ${
     isInCart
       ? "bg-green-600 cursor-not-allowed"
-      : "bg-blue-600 hover:bg-blue-700"
+      : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
   }`}
               >
                 {isInCart ? "Added to Cart" : "Add to Cart"}
               </button>
 
-              <button className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-2 rounded-xl">
+              <button className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-2 rounded-xl cursor-pointer">
                 Buy Now
               </button>
             </div>
