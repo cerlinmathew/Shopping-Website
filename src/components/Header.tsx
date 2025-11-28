@@ -24,31 +24,29 @@ export default function Header({
     <header className="sticky top-0 z-50 bg-[#2746A8]">
       <div className="max-w-7xl mx-auto px-8 py-2">
 
-        {/* TOP ROW */}
         <div className="flex items-center justify-between gap-3">
 
-          {/* Logo */}
-          <div className="flex items-center gap-2 shrink-0">
+
+          <div className="flex items-center gap-2">
             <img
               src={flipkart}
               alt="Flipkart"
               className="h-9 w-9 rounded-full"
             />
-            <span className="font-semibold text-lg tracking-tight text-white">
+            <span className="font-semibold text-lg text-white">
               Flipkart
             </span>
           </div>
 
-          {/* Search + Category - Desktop */}
           <div className="hidden md:flex flex-1 items-center gap-3">
-            <div className="flex-1">
+            <div className="">
               <Searchbar onChangeText={setSearchText} />
             </div>
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="px-3 py-1 rounded-full bg-gray-100 text-sm shadow-sm focus:outline-none cursor-pointer border-none"
+              className="px-3 py-1 rounded-full bg-gray-100 text-sm shadow-sm focus:outline-none cursor-pointer border-none text-gray-600"
             >
               <option value="all">All Categories</option>
               <option value="men's clothing">Men's Clothing</option>
@@ -58,10 +56,9 @@ export default function Header({
             </select>
           </div>
 
-          {/* Right Side */}
           <div className="flex items-center gap-4">
 
-            {/* Logout Button */}
+         
             <button
               onClick={() =>
                 logout({
@@ -75,7 +72,6 @@ export default function Header({
               Logout
             </button>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 rounded-md text-white"
@@ -87,7 +83,6 @@ export default function Header({
           </div>
         </div>
 
-        {/* MOBILE SEARCH + CATEGORY */}
         <div className="mt-3 flex flex-col gap-3 md:hidden">
           <Searchbar onChangeText={setSearchText} />
 
@@ -103,8 +98,9 @@ export default function Header({
             <option value="electronics">Electronics</option>
           </select>
         </div>
+        
 
-        {/* MOBILE NAV MENU */}
+
         {mobileMenuOpen && (
           <nav className="lg:hidden mt-4 flex flex-col gap-3 text-sm font-semibold text-white">
             <a className="hover:text-blue-200 transition cursor-pointer">Home</a>

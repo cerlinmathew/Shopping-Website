@@ -27,7 +27,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 >
 
       {product.length === 0 ? (
-        <p className="text-lg font-bold"><Lottiefy loop={true} json={Notfound} height={150} width={150} />Product Not Found</p>
+        <p className="text-lg font-bold flex flex-col justify-center items-center"><Lottiefy loop={true} json={Notfound} height={150} width={150} />Product Not Found</p>
       ) : (
         product.map((item) => (
           <div

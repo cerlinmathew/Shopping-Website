@@ -40,7 +40,7 @@ export default function ProductDetail() {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto relative">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto">
         {/* Close button */}
         <button
           onClick={() => navigate(-1)}
@@ -96,8 +96,7 @@ export default function ProductDetail() {
 
               <button
                 onClick={() => dispatch(removeFromCart(product.id))}
-                className="w-full sm:w-auto p-4 rounded-xl border hover:scale-105 transition text-xs cursor-pointer"
-              
+                className="w-full sm:w-auto px-5 py-3 rounded-xl border hover:scale-105 transition cursor-pointer"
               >
                 Remove
               </button>

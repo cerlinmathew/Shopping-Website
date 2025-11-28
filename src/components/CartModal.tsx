@@ -14,7 +14,7 @@ export default function CartModal({ close }: { close: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex justify-center sm:justify-end">
-      {/* CART PANEL */}
+    
       <div
         className="
         w-[420px]
@@ -27,7 +27,7 @@ export default function CartModal({ close }: { close: () => void }) {
         relative
       "
       >
-        {/* HEADER */}
+      
         <div className="p-4 border-b border-slate-700 flex justify-between items-center">
           <h2 className="text-lg font-bold text-white">Your Cart</h2>
           <button onClick={close}>
@@ -35,7 +35,6 @@ export default function CartModal({ close }: { close: () => void }) {
           </button>
         </div>
 
-        {/* SCROLL AREA */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-40">
           {cartItems.length === 0 ? (
             <div className="flex items-center justify-center h-full text-slate-400">
@@ -89,7 +88,6 @@ export default function CartModal({ close }: { close: () => void }) {
           )}
         </div>
 
-        {/* FIXED BOTTOM CHECKOUT */}
         <div className="absolute bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-700 p-4">
           <div className="flex justify-between text-white font-semibold mb-3">
             <span>Total</span>

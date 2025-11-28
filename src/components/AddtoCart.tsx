@@ -13,7 +13,7 @@ export default function AddtoCart() {
 
   return (
     <>
-      {/* Cart Icon Wrapper */}
+   
       <div
         onClick={() => setOpen(true)}
         className="relative cursor-pointer flex items-center justify-center
@@ -28,13 +28,14 @@ export default function AddtoCart() {
                       text-white  transition
                       "
         />
+        {/* {if cart has items} */}
 
         {cartCount > 0 && (
           <span
-            className="absolute -top-1 -right-1
+            className="absolute top-1 right-1
                         sm:-top-2 sm:-right-2
-                        bg-red-500 text-white text-[10px] sm:text-xs
-                        font-bold min-w-[18px] h-[18px] sm:min-w-[20px] sm:h-[20px]
+                        bg-red-500 text-white text-[0.625rem] sm:text-xs
+                        font-bold min-w-[1.125rem] h-[1.125rem] sm:h-[1.25rem]
                         flex items-center justify-center rounded-full"
           >
             {cartCount}
@@ -42,13 +43,13 @@ export default function AddtoCart() {
         )}
       </div>
 
-      {/* Responsive Cart Modal */}
 
       {open && (
-        <div className="fixed inset-0 z-[9999]">
+        <div className="fixed inset-0">
           <CartModal close={() => setOpen(false)} />
         </div>
       )}
     </>
   );
 }
+  

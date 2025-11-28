@@ -126,7 +126,11 @@ export default function Sidesheet() {
   // FULL VALIDATION FUNCTION
   function validate() {
     if (!form.title.trim()) {
+    
       toast.error("Title is required");
+      
+      
+      
       return false;
     }
 
@@ -204,10 +208,11 @@ export default function Sidesheet() {
             className="w-full px-3 py-2 bg-white border-b-[1.5px] border-slate-300 outline-none text-xs"
             value={form.title}
             onChange={handleChange}
+            required={true}
           />
-          {errors.title && (
+          {/* {errors.title && (
             <p className="text-red-600 text-sm">{errors.title}</p>
-          )}
+          )} */}
 
           <input
             name="price"
@@ -243,7 +248,6 @@ export default function Sidesheet() {
             <p className="text-red-600 text-sm">{errors.category}</p>
           )}
 
-          {/* Image validation */}
           <div>
             {form.image ? (
               <div className="relative bg-white border-b-[1.5px] border-slate-300 ">

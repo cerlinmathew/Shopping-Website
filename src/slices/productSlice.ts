@@ -1,7 +1,5 @@
-
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
 import axios from "axios";
 
 export type Product = {
@@ -16,7 +14,7 @@ export type Product = {
 type ProductState = {
   list: Product[];
   loading: boolean;
-  editing: Product | null; 
+  editing: Product | null;
 };
 
 const initialState: ProductState = {
@@ -34,21 +32,25 @@ const productSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    addProduct: (state, action: PayloadAction<Product>) => {
-
-      const productExists = state.list.some((p) => p.id === action.payload.id);
-      if (productExists) {
- 
-        const maxId = state.list.reduce((m, p) => Math.max(m, p.id), 0);
-        state.list.push({ ...action.payload, id: maxId + 1 });
-      } else {
+    addProduct: {
+      reducer: (state, action: PayloadAction<Product>) => {
         state.list.push(action.payload);
-      }
+      },
+      prepare: (product: Omit<Product, "id">) => {
+        return {
+          payload: {
+            ...product,
+            id: Date.now(), // unique & safe for frontend-only apps
+          },
+        };
+      },
     },
 
     updateProduct: (state, action: PayloadAction<Product>) => {
-      const idx = state.list.findIndex((p) => p.id === action.payload.id);
-      if (idx !== -1) state.list[idx] = action.payload;
+      const index = state.list.findIndex((p) => p.id === action.payload.id);
+      if (index !== -1) {
+        state.list[index] = action.payload;
+      }
     },
 
     deleteProduct: (state, action: PayloadAction<number>) => {
@@ -71,7 +73,6 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state) => {
         state.loading = false;
-      
       });
   },
 });
