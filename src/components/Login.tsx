@@ -1,97 +1,77 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import bgVideo from "../assets/login-bg.mp4";
+
+import { useAuth0 } from "@auth0/auth0-react";
+import { Navigate } from "react-router-dom";
+import flipkart from "../assets/flipkart.webp";
 
 export default function Login() {
-  const navigate = useNavigate();
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
-  const [form, setForm] = useState({
-    username: "",
-    email: ""
-  });
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  if (!isLoading && isAuthenticated) {
+    return <Navigate to="/home" replace />;
   }
 
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
-
-    const storedUser = localStorage.getItem("user");
-
-    if (!storedUser) {
-      alert("No user found. Please register first.");
-      return;
-    }
-
-    const user = JSON.parse(storedUser);
-
-    if (user.username === form.username && user.email === form.email) {
-      localStorage.setItem("isLoggedIn", "true");
-      navigate("/home");
-    } else {
-      alert("Invalid Username or Email");
-    }
-  }
+  if (isLoading) return null;
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <>
+     
+      {/* Center Container */}
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
+        <div className="bg-white/20 backdrop-blur-xl border border-white/30 p-10 rounded-3xl shadow-2xl w-full max-w-md text-center space-y-9">
 
-      {/*video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover"
-      >
-        <source src={bgVideo} type="video/mp4" />
-      </video>
+          {/* Heading */}
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold tracking-wide ">
+              Welcome Back
+            </h1>
+            <p className="text-sm text-gray-600">
+              Sign in to continue to Flipkart
+            </p>
+          </div>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60"></div>
+          {/* Divider */}
+          <div className=" bg-white/10"></div>
 
-      {/* Login Form */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen">
-        <form
-          onSubmit={handleLogin}
-          className="bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-96 space-y-4"
-        >
-          <h2 className="text-2xl font-bold text-center">Login</h2>
+           <div className="flex items-center justify-center gap-2 shrink-0">
+            <img
+              src={flipkart}
+              alt="Flipkart"
+              className="h-16 rounded-full"
+            />
+        
+          </div>
 
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            className="w-full p-3 border rounded-lg"
-            value={form.username}
-            onChange={handleChange}
-            required
-          />
+          {/* Login Button */}
+          <button
+            onClick={() =>
+              loginWithRedirect({
+                authorizationParams: {
+                  redirect_uri: "http://localhost:5173/home",
+                },
+              })
+            }
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="w-full p-3 border rounded-lg"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
 
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-            Login
+            
+            className="
+              w-full py-3 rounded-xl font-semibold text-white
+              bg-gradient-to-r from-blue-500 to-indigo-600
+              hover:from-blue-600 hover:to-indigo-700
+              transition-all duration-300
+              hover:scale-105 active:scale-95
+              shadow-lg cursor-pointer
+            "
+          >
+            Continue with Google
           </button>
 
-          <p className="text-sm text-center flex justify-center gap-1">
-            Don't have an account?
-            <div className="hover:scale-105">
-            <Link to="/register" className="text-blue-600 font-semibold ">
-              Register
-            </Link></div>
+          {/* Footer */}
+          <p className="text-xs text-gray-900">
+            Login & Enjoy your shopping
           </p>
-        </form>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -7,11 +7,12 @@ import {
 } from "@/components/ui/sheet";
 
 import { Edit, CircleX } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, updateProduct, setEditing } from "../slices/productSlice";
 import type { Product } from "../slices/productSlice";
 import type { RootState, AppDispatch } from "../store/store";
+import { toast } from "react-toastify";
 
 export default function Sidesheet() {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,8 +20,10 @@ export default function Sidesheet() {
 
   const [open, setOpen] = useState(false);
 
-  // store filename + size for preview
-  const [fileInfo, setFileInfo] = useState<{ name: string; size: number } | null>(null);
+  const [fileInfo, setFileInfo] = useState<{
+    name: string;
+    size: number;
+  } | null>(null);
 
   const [form, setForm] = useState({
     id: "",
@@ -31,78 +34,129 @@ export default function Sidesheet() {
     image: "",
   });
 
-  // open sheet when editing is set
-  useEffect(() => {
-    if (editing) {
-      setForm({
-        id: String(editing.id),
-        title: editing.title,
-        price: String(editing.price),
-        description: editing.description,
-        category: editing.category,
-        image: editing.image,
-      });
-      setOpen(true);
-    }
-  }, [editing]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // reset when sheet closed
-  useEffect(() => {
-    if (!open) {
-      dispatch(setEditing(null));
-      setForm({
-        id: "",
-        title: "",
-        price: "",
-        description: "",
-        category: "",
-        image: "",
-      });
-      setFileInfo(null);
-    }
-  }, [open, dispatch]);
+  // open sheet when editing is set
+  function resetForm() {
+    dispatch(setEditing(null));
+    setForm({
+      id: "",
+      title: "",
+      price: "",
+      description: "",
+      category: "",
+      image: "",
+    });
+    setFileInfo(null);
+    setErrors({});
+  }
+
+  // if editing product exists and sheet is closed → open it + load data
+  if (editing && !open) {
+    setForm({
+      id: String(editing.id),
+      title: editing.title,
+      price: String(editing.price),
+      description: editing.description,
+      category: editing.category,
+      image: editing.image,
+    });
+    setOpen(true);
+  }
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
+
+    // live clear error
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   }
 
   function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-      console.log("Uploaded file:", file);
+    const maxSize = 250 * 1024 * 1024; // 250MB in bytes
+    const loadingToast = toast.loading("Uploading image...");
 
-    setFileInfo({
-      name: file.name,
-      size: file.size,
-    });
+    if (!file.type.startsWith("image/")) {
+      toast.dismiss(loadingToast);
+      toast.error("Only image files are allowed");
+      return;
+    }
+
+    if (file.size > maxSize) {
+      toast.dismiss(loadingToast);
+      toast.error("Image size must be less than 250MB");
+      setErrors((prev) => ({
+        ...prev,
+        image: "Can't upload image. Size above 250MB",
+      }));
+      return;
+    }
+
+    setFileInfo({ name: file.name, size: file.size });
 
     const reader = new FileReader();
     reader.onload = () => {
       setForm((p) => ({ ...p, image: reader.result as string }));
+      setErrors((prev) => ({ ...prev, image: "" }));
+
+      toast.dismiss(loadingToast);
+      toast.success("Image uploaded successfully");
+    };
+    reader.onerror = () => {
+      toast.dismiss(loadingToast);
+      toast.error("Failed to upload image");
     };
     reader.readAsDataURL(file);
   }
 
-  // remove uploaded image
   function removeImage() {
     setForm((p) => ({ ...p, image: "" }));
     setFileInfo(null);
+    toast.info("Image removed");
   }
 
   function closeSheet() {
     setOpen(false);
   }
 
+  // FULL VALIDATION FUNCTION
+  function validate() {
+    if (!form.title.trim()) {
+      toast.error("Title is required");
+      return false;
+    }
+
+    if (!form.price || Number(form.price) <= 0) {
+      toast.error("Price must be greater than 0");
+      return false;
+    }
+
+    if (!form.description.trim()) {
+      toast.error("Description is required");
+      return false;
+    }
+
+    if (!form.category.trim()) {
+      toast.error("Category is required");
+      return false;
+    }
+
+    if (!form.image) {
+      toast.error("Product image is required");
+      return false;
+    }
+
+    return true;
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!form.title || !form.price) {
-      alert("Please provide title and price");
-      return;
-    }
+    if (!validate()) return;
 
     const payload: Product = {
       id: Number(form.id) || Date.now(),
@@ -115,106 +169,109 @@ export default function Sidesheet() {
 
     if (editing) {
       dispatch(updateProduct(payload));
-      alert("Product updated.");
+      toast.success("Product updated successfully");
     } else {
       dispatch(addProduct(payload));
-      alert("Product added .");
+      toast.success("Product added successfully");
     }
 
     closeSheet();
   }
 
   return (
-    <Sheet open={open} onOpenChange={(val: boolean) => setOpen(val)}>
-   <SheetTrigger className="fixed bottom-6 right-6 flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-3 rounded-full text-white shadow-xl hover:scale-105 transition">
-  <Edit className="w-5 h-5" /> Add Product
-</SheetTrigger>
+    <Sheet
+      open={open}
+      onOpenChange={(val) => {
+        setOpen(val);
+        if (!val) resetForm();
+      }}
+    >
+      <SheetTrigger className="fixed bottom-6 cursor-pointer right-6 flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-3 rounded-full text-white shadow-xl hover:scale-105 transition">
+        <Edit className="w-5 h-5 " /> Add Product
+      </SheetTrigger>
 
-
-      <SheetContent className="bg-white overflow-y-auto px-6">
+      <SheetContent className=" overflow-y-auto px-6 bg-white">
         <SheetHeader>
-          <SheetTitle className="text-xl font-bold m-auto">
+          <SheetTitle className="font-bold px-9 py-2 m-auto">
             {editing ? "Edit Product" : "Add New Product"}
           </SheetTitle>
         </SheetHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <input
-            name="id"
-            placeholder="Product ID (optional)"
-            className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1 outline-none"
-            value={form.id}
-            onChange={handleChange}
-          />
-
+        <form onSubmit={handleSubmit} className="space-y-10">
           <input
             name="title"
             placeholder="Enter product title"
-            className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1 outline-none"
+            className="w-full px-3 py-2 bg-white border-b-[1.5px] border-slate-300 outline-none text-xs"
             value={form.title}
             onChange={handleChange}
-            required
           />
+          {errors.title && (
+            <p className="text-red-600 text-sm">{errors.title}</p>
+          )}
 
           <input
             name="price"
             type="number"
             placeholder="Enter price"
-            className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1 outline-none"
+            className="w-full p-3 bg-white border-b-[1.5px] border-slate-300 outline-none text-xs"
             value={form.price}
             onChange={handleChange}
-            required
           />
+          {errors.price && (
+            <p className="text-red-600 text-sm">{errors.price}</p>
+          )}
 
           <textarea
             name="description"
             placeholder="Enter product description"
-            className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1 outline-none min-h-[100px]"
+            className="w-full p-3 bg-white border-b-[1.5px] border-slate-300 outline-none min-h-[100px] text-xs text-justify"
             value={form.description}
             onChange={handleChange}
           />
+          {errors.description && (
+            <p className="text-red-600 text-sm">{errors.description}</p>
+          )}
 
           <input
             name="category"
             placeholder="Enter category"
-            className="w-full p-3 rounded-lg bg-gray-400 focus:ring-1 outline-none"
+            className="w-full p-3 bg-white border-b-[1.5px] border-slate-300 outline-none text-xs"
             value={form.category}
             onChange={handleChange}
           />
+          {errors.category && (
+            <p className="text-red-600 text-sm">{errors.category}</p>
+          )}
 
-          {/* image upload */}
-          <div className="space-y-3">
+          {/* Image validation */}
+          <div>
             {form.image ? (
-              <div className="relative bg-gray-100 p-3 rounded-lg">
+              <div className="relative bg-white border-b-[1.5px] border-slate-300 ">
                 <img
                   src={form.image}
                   alt="uploaded"
-                  className="w-24 h-24 object-cover rounded-md"
+                  className=" h-24 object-cover rounded-md"
                 />
-
-                {/* file info */}
                 {fileInfo && (
-                  <div className="mt-2 text-sm text-gray-700">
-                    <p><strong>Name:</strong> {fileInfo.name}</p>
-                    <p><strong>Size:</strong> {(fileInfo.size / 1024).toFixed(2)} KB</p>
+                  <div className="mb-2 text-sm text-gray-900">
+                    <p>{fileInfo.name}</p>
+                    <p>{(fileInfo.size / (1024 * 1024)).toFixed(2)} MB</p>
                   </div>
                 )}
 
-                {/* remove button */}
                 <button
                   type="button"
                   onClick={removeImage}
-                  className="absolute top-2 right-2  p-1 rounded-full hover:scale-110"
-                  title="Remove Image"
+                  className="absolute top-2 right-2 cursor-pointer hover:scale-105"
                 >
-                  <CircleX size={16} className="cursor-pointer"/>
+                  <CircleX size={16} />
                 </button>
               </div>
             ) : (
               <>
                 <label
                   htmlFor="fileUpload"
-                  className="w-full text-gray-600 bg-gray-400 block p-3 rounded-lg cursor-pointer"
+                  className="text-xs align-middle px-3 p-2 rounded-lg cursor-pointer text-gray-500  border-[1.5px] border-slate-300 hover:bg-gray-200 duration-300 block"
                 >
                   Upload Image
                 </label>
@@ -227,11 +284,14 @@ export default function Sidesheet() {
                 />
               </>
             )}
+            {errors.image && (
+              <p className="text-red-600 text-sm">{errors.image}</p>
+            )}
           </div>
 
           <button
             type="submit"
-            className="w-full cursor-pointer p-3 rounded-lg bg-neutral-600 hover:bg-neutral-500 transition text-white font-bold shadow-lg"
+            className="w-full py-3 rounded bg-gradient-to-r from-blue-500 to-indigo-600 hover:scale-105 cursor-pointer transition text-white font-bold text-xs"
           >
             {editing ? "Update Product" : "Add Product"}
           </button>

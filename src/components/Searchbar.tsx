@@ -7,8 +7,6 @@ type SearchProps = {
 export default function Searchbar({ onChangeText }: SearchProps) {
   return (
     <div className="flex items-center bg-white shadow-sm  px-3 rounded-full transition w-60 h-8">
-
-      
       {/* searchbar input*/}
       <input
         className="flex-1 bg-transparent outline-none text-sm placeholder-gray-600"

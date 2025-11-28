@@ -3,8 +3,7 @@ import flipkart from "../assets/flipkart.webp";
 import Searchbar from "./Searchbar";
 import AddtoCart from "./AddtoCart";
 import { Menu, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 type HeaderProps = {
   searchText: string;
@@ -13,11 +12,13 @@ type HeaderProps = {
   setCategory: (cat: string) => void;
 };
 
-export default function Header({ setSearchText, category, setCategory }: HeaderProps)
- {
+export default function Header({
+  setSearchText,
+  category,
+  setCategory,
+}: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
-
+  const { logout } = useAuth0();
 
   return (
     <header className="sticky top-0 z-50 bg-[#2746A8]">
@@ -28,8 +29,14 @@ export default function Header({ setSearchText, category, setCategory }: HeaderP
 
           {/* Logo */}
           <div className="flex items-center gap-2 shrink-0">
-            <img src={flipkart} alt="Flipkart" className="h-9 w-9 rounded-full" />
-            <span className="font-semibold text-lg tracking-tight">Flipkart</span>
+            <img
+              src={flipkart}
+              alt="Flipkart"
+              className="h-9 w-9 rounded-full"
+            />
+            <span className="font-semibold text-lg tracking-tight text-white">
+              Flipkart
+            </span>
           </div>
 
           {/* Search + Category - Desktop */}
@@ -41,7 +48,7 @@ export default function Header({ setSearchText, category, setCategory }: HeaderP
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="px-4 py-1 rounded-full bg-gray-100 text-sm shadow-sm focus:outline-none"
+              className="px-3 py-1 rounded-full bg-gray-100 text-sm shadow-sm focus:outline-none cursor-pointer border-none"
             >
               <option value="all">All Categories</option>
               <option value="men's clothing">Men's Clothing</option>
@@ -54,28 +61,24 @@ export default function Header({ setSearchText, category, setCategory }: HeaderP
           {/* Right Side */}
           <div className="flex items-center gap-4">
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex gap-6 text-sm font-semibold text-white">
-              {/* <a className="hover:scale-105 transition cursor-pointer">Home</a> */}
-              {/* <a className="hover:scale-105 transition cursor-pointer">Products</a> */}
-              {/* <a className="hover:scale-105 transition cursor-pointer">About</a> */}
-              {/* <a className="hover:scale-105 transition cursor-pointer">Contact</a> */}
-            </nav>
-
-              <button
-    onClick={() => {
-      localStorage.removeItem("isLoggedIn");
-      navigate("/");
-    }}
-    className="text-white font-semibold  text-sm cursor-pointer hover:scale-105"
-  >
-    Logout
-  </button>
+            {/* Logout Button */}
+            <button
+              onClick={() =>
+                logout({
+                  logoutParams: {
+                    returnTo: window.location.origin, // redirects to Login page
+                  },
+                })
+              }
+              className="text-white font-semibold text-sm cursor-pointer hover:scale-105"
+            >
+              Logout
+            </button>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-md"
+              className="lg:hidden p-2 rounded-md text-white"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -103,11 +106,11 @@ export default function Header({ setSearchText, category, setCategory }: HeaderP
 
         {/* MOBILE NAV MENU */}
         {mobileMenuOpen && (
-          <nav className="lg:hidden mt-4 flex flex-col gap-3 text-sm font-semibold text-slate-700">
-            <a className="hover:text-blue-600 transition cursor-pointer">Home</a>
-            <a className="hover:text-blue-600 transition cursor-pointer">Products</a>
-            <a className="hover:text-blue-600 transition cursor-pointer">About</a>
-            <a className="hover:text-blue-600 transition cursor-pointer">Contact</a>
+          <nav className="lg:hidden mt-4 flex flex-col gap-3 text-sm font-semibold text-white">
+            <a className="hover:text-blue-200 transition cursor-pointer">Home</a>
+            <a className="hover:text-blue-200 transition cursor-pointer">Products</a>
+            <a className="hover:text-blue-200 transition cursor-pointer">About</a>
+            <a className="hover:text-blue-200 transition cursor-pointer">Contact</a>
           </nav>
         )}
 

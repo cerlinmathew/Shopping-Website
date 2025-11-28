@@ -14,9 +14,9 @@ export default function CartModal({ close }: { close: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex justify-center sm:justify-end">
-
       {/* CART PANEL */}
-      <div className="
+      <div
+        className="
         w-[420px]
         max-w-[95%]
         h-screen
@@ -25,13 +25,13 @@ export default function CartModal({ close }: { close: () => void }) {
         rounded-2xl sm:rounded-none
         shadow-2xl
         relative
-      ">
-
+      "
+      >
         {/* HEADER */}
-        <div className="p-4 border-b border-slate-700 flex justify-between items-center shrink-0">
+        <div className="p-4 border-b border-slate-700 flex justify-between items-center">
           <h2 className="text-lg font-bold text-white">Your Cart</h2>
           <button onClick={close}>
-            <X className="text-slate-400 hover:text-white" />
+            <X className="text-slate-400 hover:text-white cursor-pointer" />
           </button>
         </div>
 
@@ -42,8 +42,11 @@ export default function CartModal({ close }: { close: () => void }) {
               Your cart is empty
             </div>
           ) : (
-            cartItems.map(item => (
-              <div key={item.id} className="flex gap-3 bg-slate-800 rounded-xl p-3 shadow ring-1 ring-slate-700">
+            cartItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex gap-3 bg-slate-800 rounded-xl p-3 shadow ring-1 ring-slate-700"
+              >
                 <img
                   src={item.image}
                   alt={item.title}
@@ -51,23 +54,34 @@ export default function CartModal({ close }: { close: () => void }) {
                 />
 
                 <div className="flex-1">
-                  <h4 className="text-white font-semibold text-sm line-clamp-2">
+                  <h4 className="text-white font-semibold text-sm line-clamp-1">
                     {item.title}
                   </h4>
                   <p className="text-emerald-400 font-bold">${item.price}</p>
 
                   <div className="flex items-center gap-2 mt-2">
-                    <button onClick={() => dispatch(decreaseQty(item.id))} className="border px-2 py-1 rounded text-white">
+                    <button
+                      onClick={() => dispatch(decreaseQty(item.id))}
+                      className={`border px-2 py-1 rounded text-white ${item.quantity <= 1 ? "cursor-not-allowed" : "cursor-pointer"
+}`}>
                       <Minus size={14} />
                     </button>
-                    <span className="text-white font-semibold">{item.quantity}</span>
-                    <button onClick={() => dispatch(increaseQty(item.id))} className="border px-2 py-1 rounded text-white">
+                    <span className="text-white font-semibold">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => dispatch(increaseQty(item.id))}
+                      className="border px-2 py-1 rounded text-white cursor-pointer"
+                    >
                       <Plus size={14} />
                     </button>
                   </div>
                 </div>
 
-                <button onClick={() => dispatch(removeFromCart(item.id))} className="text-red-500">
+                <button
+                  onClick={() => dispatch(removeFromCart(item.id))}
+                  className="text-red-500 cursor-pointer"
+                >
                   <Trash2 size={18} />
                 </button>
               </div>
@@ -75,18 +89,17 @@ export default function CartModal({ close }: { close: () => void }) {
           )}
         </div>
 
-        {/* ✅ FIXED BOTTOM CHECKOUT */}
+        {/* FIXED BOTTOM CHECKOUT */}
         <div className="absolute bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-700 p-4">
           <div className="flex justify-between text-white font-semibold mb-3">
             <span>Total</span>
             <span className="text-blue-400">${total.toFixed(2)}</span>
           </div>
 
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold">
-            Checkout Securely
+          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold cursor-pointer">
+            Proceed to Checkout Securely
           </button>
         </div>
-
       </div>
     </div>
   );

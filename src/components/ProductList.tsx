@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
-import { fetchProducts } from "../slices/productSlice";
-import type { RootState, AppDispatch } from "../store/store";
+import type { RootState } from "../store/store";
+import Loader from "./Loader";
 
 export default function ProductList({
   search,
@@ -11,12 +10,7 @@ export default function ProductList({
   search: string;
   category: string;
 }) {
-  const dispatch = useDispatch<AppDispatch>();
   const { list: products, loading } = useSelector((s: RootState) => s.products);
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
 
   const cleaned = search.trim().toLowerCase();
 
@@ -30,7 +24,13 @@ export default function ProductList({
     return matchSearch && matchCategory;
   });
 
-  if (loading) return <p className="text-white text-lg">Loading...</p>;
+  if (loading) {
+    return (
+      <p className="text-white text-lg flex justify-center items-center h-[calc(100vh-100px)]">
+        <Loader />
+      </p>
+    );
+  }
 
   return <ProductCard product={filteredProducts} />;
 }

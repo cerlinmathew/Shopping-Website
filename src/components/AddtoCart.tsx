@@ -36,20 +36,19 @@ export default function AddtoCart() {
                         bg-red-500 text-white text-[10px] sm:text-xs
                         font-bold min-w-[18px] h-[18px] sm:min-w-[20px] sm:h-[20px]
                         flex items-center justify-center rounded-full"
-                                  >
+          >
             {cartCount}
           </span>
         )}
       </div>
 
       {/* Responsive Cart Modal */}
-      
-        {open && (
-  <div className="fixed inset-0 z-[9999]">
-    <CartModal close={() => setOpen(false)} />
-  </div>
-)}
 
+      {open && (
+        <div className="fixed inset-0 z-[9999]">
+          <CartModal close={() => setOpen(false)} />
+        </div>
+      )}
     </>
   );
 }
